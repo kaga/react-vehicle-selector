@@ -1,10 +1,10 @@
 import { useQuery, gql } from "@apollo/client";
-import { VEHICLE_SELECTOR_MODELS } from "./query";
+import { VEHICLE_SELECTOR_MODELS } from "./Query";
 
-export function ModelsComponent() {
+export function ModelsComponent(pros: ModelsProps) {
   const { loading, error, data } = useQuery(VEHICLE_SELECTOR_MODELS, {
     variables: {
-      uvdb_make_id: 1361,
+      uvdb_make_id: pros.selectedMakeId,
     },
   });
 
@@ -22,4 +22,8 @@ export function ModelsComponent() {
       )}
     </select>
   );
+}
+
+type ModelsProps = {
+  selectedMakeId: number | null
 }

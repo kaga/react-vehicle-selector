@@ -1,7 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
-import { VEHICLE_SELECTOR_YEARS } from "./query";
-
-export function YearsComponent() {
+import React from "react";
+import { VEHICLE_SELECTOR_YEARS } from "./Query";
+export function YearsComponent(props: YearsProps) {
   const { loading, error, data } = useQuery(VEHICLE_SELECTOR_YEARS);
 
   if (loading) return <p>Loading...</p>;
@@ -19,3 +19,7 @@ export function YearsComponent() {
     </select>
   );
 }
+
+type YearsProps = {
+  onSelected: (yearId: number) => void;
+};

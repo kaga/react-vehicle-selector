@@ -10,9 +10,8 @@ import {
   Theme,
 } from "@material-ui/core";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { YearsComponent } from "./components/vehicle-selector/Years";
-import { MakesComponent } from "./components/vehicle-selector/Makes";
-import { ModelsComponent } from "./components/vehicle-selector/Models";
+import { VehicleSelector } from "./components/vehicle-selector/VehicleSelector";
+
 
 function App() {
   const client = new ApolloClient({
@@ -22,9 +21,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <YearsComponent></YearsComponent>
-      <MakesComponent></MakesComponent>
-      <ModelsComponent></ModelsComponent>
+      <VehicleSelector></VehicleSelector>
     </ApolloProvider>
   );
 }
