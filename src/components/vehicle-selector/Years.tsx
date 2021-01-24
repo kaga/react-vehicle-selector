@@ -1,18 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
-
-const VEHICLE_SELECTOR_YEARS = gql`
-  query {
-    uvdb {
-      vehicle_selector {
-        uvdb_years {
-          items {
-            id
-          }
-        }
-      }
-    }
-  }
-`;
+import { VEHICLE_SELECTOR_YEARS } from "./query";
 
 export function YearsComponent() {
   const { loading, error, data } = useQuery(VEHICLE_SELECTOR_YEARS);
