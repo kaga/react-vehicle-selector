@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { VehicleSelector } from './components/vehicle-selector/VehicleSelector';
+import { Grid } from '@material-ui/core';
 
 function App() {
   const client = new ApolloClient({
@@ -10,9 +11,18 @@ function App() {
   });
 
   return (
-    <ApolloProvider client={client}>
-      <VehicleSelector></VehicleSelector>
-    </ApolloProvider>
+    <React.Fragment>
+      <ApolloProvider client={client}>
+        <Grid container spacing={1} direction="column" justify="center">
+          <Grid item>
+            <VehicleSelector></VehicleSelector>
+          </Grid>
+          {/* <Grid item>
+            <VehicleSelector></VehicleSelector>
+          </Grid> */}
+        </Grid>
+      </ApolloProvider>
+    </React.Fragment>
   );
 }
 
