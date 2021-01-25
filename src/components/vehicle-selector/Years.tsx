@@ -1,7 +1,7 @@
-import { useQuery, gql } from "@apollo/client";
-import React from "react";
-import { VEHICLE_SELECTOR_YEARS } from "./Query";
-export function YearsComponent(props: YearsProps) {
+import { useQuery } from '@apollo/client';
+import { VEHICLE_SELECTOR_YEARS } from './Query';
+
+export function YearsComponent(_props: YearsProps) {
   const { loading, error, data } = useQuery(VEHICLE_SELECTOR_YEARS);
 
   if (loading) return <p>Loading...</p>;

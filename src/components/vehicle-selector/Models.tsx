@@ -1,5 +1,5 @@
-import { useQuery, gql } from "@apollo/client";
-import { VEHICLE_SELECTOR_MODELS } from "./Query";
+import { useQuery } from '@apollo/client';
+import { VEHICLE_SELECTOR_MODELS } from './Query';
 
 export function ModelsComponent(pros: ModelsProps) {
   const { loading, error, data } = useQuery(VEHICLE_SELECTOR_MODELS, {
@@ -25,5 +25,5 @@ export function ModelsComponent(pros: ModelsProps) {
 }
 
 type ModelsProps = {
-  selectedMakeId: number | null
-}
+  selectedMakeId: number | null;
+};

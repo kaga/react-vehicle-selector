@@ -1,4 +1,3 @@
-
 export type ComponentProps = {
-    onSelected: (id: number) => void
-}
+  onSelected: (id: number) => void;
+};

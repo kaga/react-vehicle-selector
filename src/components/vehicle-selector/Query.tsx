@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const FRAGEMENT_LEGACY_PAGINATION_CURSOR = `
 fragment legacyPaginationCursor on LegacyPaginationCursor {
