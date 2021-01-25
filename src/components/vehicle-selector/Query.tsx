@@ -101,20 +101,10 @@ export const VEHICLE_SELECTOR_MODELS = gql`
 `;
 
 export const VEHICLE_SELECTOR_YEARS = gql`
-  query VehicleSelectorYearOptions(
-    $uvdb_make_id: Int
-    $uvdb_model_id: Int
-    $limit: Int
-    $page: Int
-  ) {
+  query VehicleSelectorYearOptions($uvdb_make_id: Int, $uvdb_model_id: Int, $limit: Int, $page: Int) {
     uvdb {
       vehicle_selector {
-        uvdb_years(
-          uvdb_make_id: $uvdb_make_id
-          uvdb_model_id: $uvdb_model_id
-          limit: $limit
-          page: $page
-        ) {
+        uvdb_years(uvdb_make_id: $uvdb_make_id, uvdb_model_id: $uvdb_model_id, limit: $limit, page: $page) {
           items {
             id
           }

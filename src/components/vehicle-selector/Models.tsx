@@ -13,13 +13,11 @@ export function ModelsComponent(pros: ModelsProps) {
 
   return (
     <select>
-      {data.uvdb.vehicle_selector.uvdb_models.items.map(
-        ({ id, name }: { id: number; name: string }) => (
-          <option key={id} value={name}>
-            {name}
-          </option>
-        )
-      )}
+      {data.uvdb.vehicle_selector.uvdb_models.items.map(({ id, name }: { id: number; name: string }) => (
+        <option key={id} value={name}>
+          {name}
+        </option>
+      ))}
     </select>
   );
 }

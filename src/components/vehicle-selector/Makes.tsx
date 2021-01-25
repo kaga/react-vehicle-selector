@@ -15,13 +15,11 @@ export function MakesComponent({ onSelected }: ComponentProps) {
 
   return (
     <select onChange={onSelectedUi}>
-      {data.uvdb.vehicle_selector.uvdb_makes.items.map(
-        ({ id, name }: { id: number; name: string }) => (
-          <option key={id} value={id}>
-            {name}
-          </option>
-        )
-      )}
+      {data.uvdb.vehicle_selector.uvdb_makes.items.map(({ id, name }: { id: number; name: string }) => (
+        <option key={id} value={id}>
+          {name}
+        </option>
+      ))}
     </select>
   );
 }

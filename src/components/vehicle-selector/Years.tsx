@@ -9,13 +9,11 @@ export function YearsComponent(_props: YearsProps) {
 
   return (
     <select>
-      {data.uvdb.vehicle_selector.uvdb_years.items.map(
-        ({ id }: { id: number }) => (
-          <option key={id} value={id}>
-            {id}
-          </option>
-        )
-      )}
+      {data.uvdb.vehicle_selector.uvdb_years.items.map(({ id }: { id: number }) => (
+        <option key={id} value={id}>
+          {id}
+        </option>
+      ))}
     </select>
   );
 }
