@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import { VEHICLE_SELECTOR_YEARS } from '../Query';
+import { State } from '../VehicleSelector';
 import { AutocompleteOptions, Option } from './Sample';
 
 export function YearsComponent(props: YearsProps) {
@@ -17,11 +18,19 @@ export function YearsComponent(props: YearsProps) {
     };
   });
 
-  return <AutocompleteOptions title="Year" options={options} onSelected={(option) => props.onSelected(option)} />;
+  return (
+    <AutocompleteOptions
+      title="Year"
+      options={options}
+      selectedOption={props.state.selectedYear}
+      onSelected={(option) => props.onSelected(option)}
+    />
+  );
 }
 
 type YearsProps = {
-  onSelected: (selectedOption: YearOption) => void;
+  onSelected: (selectedOption: YearOption | null) => void;
+  state: State;
 };
 
 export interface YearOption extends Option {

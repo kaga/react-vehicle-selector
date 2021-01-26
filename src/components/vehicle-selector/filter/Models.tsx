@@ -37,8 +37,8 @@ export function ModelsComponent(props: ModelsProps) {
 }
 
 type ModelsProps = {
-  selectedMakeId: number | null;
-  onSelected: (selectedOption: ModelOption) => void;
+  selectedMakeId: number | null | undefined;
+  onSelected: (selectedOption: ModelOption | null) => void;
 };
 
 export interface ModelOption extends Option {

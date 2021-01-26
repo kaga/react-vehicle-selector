@@ -14,23 +14,32 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function AutocompleteOptions<OptionType extends Option>(props: AutocompleteOptionsProps<OptionType>) {
   const classes = useStyles();
+  let [value, setValue] = React.useState<OptionType | undefined | null>(props.selectedOption);
+  let [inputValue, setInputValue] = React.useState('');
+
+  //TODO - Clear Selection
+
   return (
     <Autocomplete
       autoComplete={true}
       autoSelect={true}
       autoHighlight
-      disabled={props.disabled || false} 
+      disabled={props.disabled || false}
       className={classes.control}
       options={props.options}
       getOptionLabel={(option) => option.label}
       getOptionSelected={(option, value) => {
         return option.key === value.key;
       }}
+      value={value}
       renderInput={(params) => <TextField {...params} label={props.title} variant="outlined" />}
-      onChange={(_, value) => {
-        if (value) {
-          props.onSelected(value);
-        }
+      onChange={(_, newValue, reason) => {
+        props.onSelected(newValue);
+        setValue(newValue);
+      }}
+      inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
       }}
     />
   );
@@ -40,8 +49,9 @@ type AutocompleteOptionsProps<OptionType extends Option> = {
   disabled?: boolean;
   title: string;
   options: OptionType[];
+  selectedOption?: OptionType | null;
 
-  onSelected(option: OptionType): void;
+  onSelected(option: OptionType | null): void;
 };
 
 export interface Option {

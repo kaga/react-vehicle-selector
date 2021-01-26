@@ -6,49 +6,56 @@ import { Container, Grid, Paper } from '@material-ui/core';
 export class VehicleSelector extends React.Component<VehicleSelectorProperties, State> {
   constructor(props: VehicleSelectorProperties) {
     super(props);
-    this.state = {} as State;
+    this.state = {};
   }
 
-  handleYearSelection(option: YearOption) {
-    this.setState((previousState) => ({
-      ...previousState,
-      selectedYearId: option.id,
-      selectedModelId: null,
-      selectedMakeId: null,
-    }));
+  handleYearSelection(option: YearOption | null) {
+    this.setState({
+      selectedYear: option,
+      selectedModel: undefined,
+      selectedMake: undefined,
+    });
   }
 
-  handleMakeSelection(option: MakesOption) {
-    this.setState((previousState) => ({
-      ...previousState,
-      selectedMakeId: option.id,
-      selectedModelId: null
-    }));
+  handleMakeSelection(option: MakesOption | null) {
+    this.setState({
+      selectedMake: option,
+      selectedModel: undefined,
+    });
   }
 
-  handleModelSelection(option: ModelOption) {
-    this.setState((previousState) => ({
-      ...previousState,
-      selectedModelId: option.id,
-    }));
+  handleModelSelection(option: ModelOption | null) {
+    this.setState({
+      selectedModel: option,
+    });
   }
 
   render() {
+    const items = [];
+    items.push(
+      <Grid item xs>
+        <YearsComponent onSelected={(option) => this.handleYearSelection(option)} state={this.state} />
+      </Grid>,
+    );
+    items.push(
+      <Grid item xs>
+        <MakesComponent onSelected={(option) => this.handleYearSelection(option)} state={this.state} />
+      </Grid>,
+    );
+    items.push(
+      <Grid item xs>
+        <ModelsComponent
+          selectedMakeId={this.state.selectedMake?.id}
+          onSelected={(option) => this.handleMakeSelection(option)}
+        ></ModelsComponent>
+      </Grid>,
+    );
+
     return (
       <Container maxWidth="lg">
         <Paper>
           <Grid container direction="row" justify="center" spacing={0}>
-            <Grid item xs>
-              <YearsComponent onSelected={(option) => this.handleYearSelection(option)}/>
-            </Grid>
-
-            <Grid item xs>
-              <MakesComponent onSelected={(option) => this.handleMakeSelection(option)}/>
-            </Grid>
-            
-            <Grid item xs>
-              <ModelsComponent selectedMakeId={this.state.selectedMakeId} onSelected={(option) => this.handleMakeSelection(option)}></ModelsComponent>
-            </Grid>
+            {items}
           </Grid>
         </Paper>
       </Container>
@@ -59,7 +66,7 @@ export class VehicleSelector extends React.Component<VehicleSelectorProperties, 
 type VehicleSelectorProperties = {};
 
 export type State = {
-  selectedYearId: number | null;
-  selectedMakeId: number | null;
-  selectedModelId: number | null;
+  selectedYear?: YearOption | null;
+  selectedMake?: MakesOption | null;
+  selectedModel?: ModelOption | null;
 };

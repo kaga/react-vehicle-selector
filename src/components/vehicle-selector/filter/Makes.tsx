@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { VEHICLE_SELECTOR_MAKES } from '../Query';
+import { State } from '../VehicleSelector';
 import { AutocompleteOptions, Option } from './Sample';
 
 export function MakesComponent(props: MakesProps) {
@@ -16,11 +17,12 @@ export function MakesComponent(props: MakesProps) {
     };
   });
 
-  return <AutocompleteOptions title="Makes" options={options} onSelected={(option) => props.onSelected(option)} />;
+  return <AutocompleteOptions title="Makes" options={options} selectedOption={props.state.selectedMake} onSelected={(option) => props.onSelected(option)}  />;
 }
 
 type MakesProps = {
-  onSelected: (selectedOption: MakesOption) => void;
+  onSelected: (selectedOption: MakesOption | null) => void;
+  state: State
 };
 
 export interface MakesOption extends Option {
