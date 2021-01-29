@@ -1,8 +1,11 @@
 import React from 'react';
 import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { VehicleSelector } from './components/vehicle-selector/VehicleSelector';
 import { Grid } from '@material-ui/core';
+import { BaseVehicle, VehicleSelector } from './components/VehicleSelector';
+import { VehicleYear } from './components/VehicleYear';
+import { VehicleMake } from './components/VehicleMake';
+import { VehicleModel } from './components/VehicleModel';
 
 function App() {
   const client = new ApolloClient({
@@ -14,12 +17,30 @@ function App() {
     <React.Fragment>
       <ApolloProvider client={client}>
         <Grid container spacing={1} direction="column" justify="center">
+
           <Grid item>
-            <VehicleSelector></VehicleSelector>
+            <VehicleSelector
+              onSelectedBaseVehicle={(baseVehicle: BaseVehicle) => {
+                console.log(baseVehicle);
+              }}
+            >
+              <VehicleYear></VehicleYear>
+              <VehicleMake></VehicleMake>
+              <VehicleModel></VehicleModel>
+            </VehicleSelector>
           </Grid>
-          {/* <Grid item>
-            <VehicleSelector></VehicleSelector>
-          </Grid> */}
+
+          <Grid item>
+            <VehicleSelector
+              onSelectedBaseVehicle={(baseVehicle: BaseVehicle) => {
+                console.log(baseVehicle);
+              }}
+            >
+              <VehicleMake></VehicleMake>
+              <VehicleModel></VehicleModel>
+              <VehicleYear></VehicleYear>
+            </VehicleSelector>
+          </Grid>
         </Grid>
       </ApolloProvider>
     </React.Fragment>

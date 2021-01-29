@@ -12,13 +12,14 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export function AutocompleteOptions<OptionType extends Option>(props: AutocompleteOptionsProps<OptionType>) {
+export function FilterSelect<OptionType extends Option>(props: FilterSelectProps<OptionType>) {
   const classes = useStyles();
   let [value, setValue] = React.useState<OptionType | undefined | null>(props.selectedOption);
   let [inputValue, setInputValue] = React.useState('');
+  let loading = true;
 
   //TODO - Clear Selection
-
+  
   return (
     <Autocomplete
       autoComplete={true}
@@ -28,14 +29,15 @@ export function AutocompleteOptions<OptionType extends Option>(props: Autocomple
       className={classes.control}
       options={props.options}
       getOptionLabel={(option) => option.label}
+      loading={loading}
       getOptionSelected={(option, value) => {
         return option.key === value.key;
       }}
-      value={value}
+      value={props.selectedOption}
       renderInput={(params) => <TextField {...params} label={props.title} variant="outlined" />}
       onChange={(_, newValue, reason) => {
         props.onSelected(newValue);
-        setValue(newValue);
+        setValue(value);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
@@ -45,7 +47,7 @@ export function AutocompleteOptions<OptionType extends Option>(props: Autocomple
   );
 }
 
-type AutocompleteOptionsProps<OptionType extends Option> = {
+type FilterSelectProps<OptionType extends Option> = {
   disabled?: boolean;
   title: string;
   options: OptionType[];
