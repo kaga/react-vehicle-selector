@@ -4,17 +4,19 @@ import update from 'immutability-helper';
 import { every, isObject, take } from 'lodash';
 
 export function VehicleSelector(props: VehicleSelectorProps) {
-  const [filterItemSelectedOptions, setFilterItemSelectedOptions] = useState<Array<SelectedOption | undefined>>(Array(props.children.length).fill(null));
+  const [filterItemSelectedOptions, setFilterItemSelectedOptions] = useState<Array<SelectedOption | undefined>>(
+    Array(props.children.length).fill(null),
+  );
 
   const children = props.children.map((element: React.ReactElement, index: number) => {
     const hasSelected = every(take(filterItemSelectedOptions, index), (option) => isObject(option));
-    let disabled = (index > 0 && !hasSelected);
-    const elementProps: VehicleSelectorFilterItemProps = {
+    let disabled = index > 0 && !hasSelected;
+    const elementProps: FilterItemProps = {
       disabled: disabled,
       onSelected: (selectedOption) => {
         const updatedItem = update(filterItemSelectedOptions, {
-          [index]: { $set: selectedOption }
-        })
+          [index]: { $set: selectedOption },
+        });
 
         setFilterItemSelectedOptions(updatedItem);
       },
@@ -22,10 +24,7 @@ export function VehicleSelector(props: VehicleSelectorProps) {
 
     return (
       <Grid item xs>
-        {React.cloneElement<VehicleSelectorFilterItemProps>(
-          element,
-          elementProps
-        )}
+        {React.cloneElement<FilterItemProps>(element, elementProps)}
       </Grid>
     );
   });
@@ -51,7 +50,7 @@ export interface BaseVehicle {}
 
 interface SelectedOption {}
 
-export interface VehicleSelectorFilterItemProps {
+export interface FilterItemProps {
   disabled?: boolean;
   onSelected?: (selectedOption: SelectedOption | null | undefined) => void;
 }

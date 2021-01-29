@@ -1,8 +1,8 @@
 import React from 'react';
 import { FilterSelect } from './common/FilterSelect';
-import { VehicleSelectorFilterItemProps } from './VehicleSelector';
+import { FilterItemProps } from './VehicleSelector';
 
-export function VehicleModel({ disabled, onSelected }: VehicleSelectorFilterItemProps) {
+export function VehicleModel({ disabled, onSelected }: FilterItemProps) {
   const options = [
     {
       key: '66765',
@@ -35,6 +35,6 @@ export function VehicleModel({ disabled, onSelected }: VehicleSelectorFilterItem
   ];
 
   return (
-    <FilterSelect disabled={disabled} title="Model" options={options} onSelected={(option) => onSelected(option)} />
+    <FilterSelect disabled={disabled} title="Model" options={options} onSelected={(option) => onSelected?.(option)} />
   );
 }
