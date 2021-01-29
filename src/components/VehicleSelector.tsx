@@ -1,7 +1,7 @@
 import { Container, Paper, Grid, Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import update from 'immutability-helper';
-import { every, isObject, take } from 'lodash';
+import { every, isObject, slice, take } from 'lodash';
 
 export function VehicleSelector(props: VehicleSelectorProps) {
   const [filterItemSelectedOptions, setFilterItemSelectedOptions] = useState<Array<SelectedOption | undefined>>(
@@ -14,11 +14,15 @@ export function VehicleSelector(props: VehicleSelectorProps) {
     const elementProps: FilterItemProps = {
       disabled: disabled,
       onSelected: (selectedOption) => {
-        const updatedItem = update(filterItemSelectedOptions, {
-          [index]: { $set: selectedOption },
-        });
-
-        setFilterItemSelectedOptions(updatedItem);
+        
+        if (selectedOption) {
+          const updatedItem = update(filterItemSelectedOptions, {
+            [index]: { $set: selectedOption },
+          });
+          setFilterItemSelectedOptions(updatedItem);
+        } else {
+          setFilterItemSelectedOptions(Array(props.children.length).fill(null));
+        }
       },
     };
 
