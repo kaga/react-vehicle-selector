@@ -18,6 +18,18 @@ export interface UvdbModel extends IdentifiableModel<number> {
   name: string;
 }
 
+export function parseResponseBody(data: {
+  uvdb: {
+    vehicle_selector: {
+      uvdb_models: {
+        items: UvdbModel[];
+      };
+    };
+  };
+}) {
+  return data.uvdb.vehicle_selector.uvdb_models.items;
+}
+
 export const VEHICLE_SELECTOR_MODELS = gql`
   query VehicleSelectorModelOptions(
     $includeLocalization: Boolean = false

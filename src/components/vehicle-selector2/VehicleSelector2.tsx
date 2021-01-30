@@ -81,7 +81,7 @@ export function GqlVehicleSelectorItem<
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
-    const options = data ? graphql.parseResponseBodies(data) : [];
+    const options = data ? graphql.parseResponseBody(data) : [];
 
     return <SearchableList {...props} title={title} options={options} getOptionLabel={getOptionLabel} />;
   };
@@ -96,7 +96,7 @@ interface GqlVehicleSelectorItemParameters<
   graphql: {
     query: DocumentNode;
     getQueryVariables: (props: VehicleSelectorItemPropsType) => GraphqlQueryVariableType | undefined;
-    parseResponseBodies: (response: any) => T[];
+    parseResponseBody: (response: any) => T[];
   };
   getOptionLabel: (option: T) => string;
 }

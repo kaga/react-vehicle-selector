@@ -2,6 +2,7 @@ import { SearchableListProps, ListOption } from '../common/SearchableList';
 import { GqlVehicleSelectorItem } from './VehicleSelector2';
 import {
   GraphqlVehicleYearVariable,
+  parseResponseBody,
   UvdbYear,
   VEHICLE_SELECTOR_YEARS,
 } from '../../services/vehicle-selector/queries/VehicleYears';
@@ -21,12 +22,7 @@ export const YearSelector = GqlVehicleSelectorItem<
       uvdb_model_id: props.selectedModel?.id,
       limit: 1000,
     }),
-    parseResponseBodies: (data) =>
-      data.uvdb.vehicle_selector.uvdb_years.items.map(({ id }: UvdbYear) => {
-        return {
-          id: id,
-        };
-      }),
+    parseResponseBody: parseResponseBody
   },
   getOptionLabel: (option) => `${option.id}`,
 });

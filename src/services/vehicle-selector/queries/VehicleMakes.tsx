@@ -17,6 +17,18 @@ export interface UvdbMake extends IdentifiableModel<number> {
   name: string;
 }
 
+export function parseResponseBody(data: {
+  uvdb: {
+    vehicle_selector: {
+      uvdb_makes: {
+        items: UvdbMake[];
+      };
+    };
+  };
+}) {
+  return data.uvdb.vehicle_selector.uvdb_makes.items;
+}
+
 export const VEHICLE_SELECTOR_MAKES = gql`
   query VehicleSelectorMakeOptions(
     $includeLocalization: Boolean = false

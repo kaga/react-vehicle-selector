@@ -13,6 +13,18 @@ export interface UvdbYear extends IdentifiableModel<number> {
   id: number;
 }
 
+export function parseResponseBody(data: {
+  uvdb: {
+    vehicle_selector: {
+      uvdb_years: {
+        items: UvdbYear[];
+      };
+    };
+  };
+}) {
+  return data.uvdb.vehicle_selector.uvdb_years.items;
+}
+
 export const VEHICLE_SELECTOR_YEARS = gql`
   query VehicleSelectorYearOptions($uvdb_make_id: Int, $uvdb_model_id: Int, $limit: Int, $page: Int) {
     uvdb {

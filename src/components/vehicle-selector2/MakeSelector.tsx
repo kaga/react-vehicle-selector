@@ -2,6 +2,7 @@ import { SearchableListProps, ListOption } from '../common/SearchableList';
 import { GqlVehicleSelectorItem } from './VehicleSelector2';
 import {
   GraphqlVehicleMakeVariable,
+  parseResponseBody,
   UvdbMake,
   VEHICLE_SELECTOR_MAKES,
 } from '../../services/vehicle-selector/queries/VehicleMakes';
@@ -20,9 +21,9 @@ export const MakeSelector = GqlVehicleSelectorItem<
       uvdb_year_id: props.selectedYear?.id,
       query: props.searchQuery,
     }),
-    parseResponseBodies: (data) => data.uvdb.vehicle_selector.uvdb_makes.items.map((model: UvdbMake) => model),
+    parseResponseBody: parseResponseBody,
   },
-  getOptionLabel: (option) => `${option.name}`,
+  getOptionLabel: (option) => option.name,
 });
 
 interface VehiceMakeSelectorItemProps extends SearchableListProps<VehicleMakeOption> {

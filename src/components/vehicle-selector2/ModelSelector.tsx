@@ -1,3 +1,4 @@
+import { parseResponseBody } from '../../services/vehicle-selector/queries/VehicleMakes';
 import {
   GraphqlVehicleModelVariable,
   UvdbModel,
@@ -26,9 +27,9 @@ export const ModelSelector = GqlVehicleSelectorItem<
       }
       return undefined;
     },
-    parseResponseBodies: (data) => data.uvdb.vehicle_selector.uvdb_models.items.map((model: UvdbModel) => model),
+    parseResponseBody: parseResponseBody
   },
-  getOptionLabel: (option) => `${option.name}`,
+  getOptionLabel: (option) => option.name,
 });
 
 interface VehicleModelSelectorItemProps extends SearchableListProps<VehicleModelOption> {
