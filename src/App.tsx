@@ -6,6 +6,7 @@ import { BaseVehicle, VehicleSelector } from './components/VehicleSelector';
 import { VehicleYear } from './components/VehicleYear';
 import { VehicleMake } from './components/VehicleMake';
 import { VehicleModel } from './components/VehicleModel';
+import { MakeSelector, ModelSelector, VehicleSelector2, YearSelector } from './components/VehicleSelector2';
 
 function App() {
   const client = new ApolloClient({
@@ -17,7 +18,6 @@ function App() {
     <React.Fragment>
       <ApolloProvider client={client}>
         <Grid container spacing={1} direction="column" justify="center">
-
           <Grid item>
             <VehicleSelector
               onSelectedBaseVehicle={(baseVehicle: BaseVehicle) => {
@@ -30,7 +30,7 @@ function App() {
             </VehicleSelector>
           </Grid>
 
-          <Grid item>
+          {/* <Grid item>
             <VehicleSelector
               onSelectedBaseVehicle={(baseVehicle: BaseVehicle) => {
                 console.log(baseVehicle);
@@ -40,7 +40,23 @@ function App() {
               <VehicleModel></VehicleModel>
               <VehicleYear></VehicleYear>
             </VehicleSelector>
+          </Grid> */}
+
+          <Grid item>
+            <VehicleSelector2>
+              <YearSelector></YearSelector>
+              <MakeSelector></MakeSelector>
+              <ModelSelector></ModelSelector>
+            </VehicleSelector2>
           </Grid>
+
+          {/* <Grid item>
+            <VehicleSelector2>
+              <MakeSelector></MakeSelector>
+              <ModelSelector></ModelSelector>
+              <YearSelector></YearSelector>
+            </VehicleSelector2>
+          </Grid> */}
         </Grid>
       </ApolloProvider>
     </React.Fragment>
