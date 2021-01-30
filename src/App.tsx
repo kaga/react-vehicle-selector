@@ -6,7 +6,10 @@ import { BaseVehicle, VehicleSelector } from './components/VehicleSelector';
 import { VehicleYear } from './components/VehicleYear';
 import { VehicleMake } from './components/VehicleMake';
 import { VehicleModel } from './components/VehicleModel';
-import { MakeSelector, ModelSelector, VehicleSelector2, YearSelector } from './components/VehicleSelector2';
+import { VehicleSelector2 } from './components/vehicle-selector2/VehicleSelector2';
+import { YearSelector } from './components/vehicle-selector2/YearSelector';
+import { MakeSelector } from './components/vehicle-selector2/MakeSelector';
+import { ModelSelector } from './components/vehicle-selector2/ModelSelector';
 
 function App() {
   const client = new ApolloClient({
