@@ -1,17 +1,17 @@
 import { SearchableListProps } from '../../common/SearchableList';
 import {
   GraphqlVehicleYearVariable,
-  parseResponseBody,
+  getResponseItems,
   VEHICLE_SELECTOR_YEARS,
 } from '../../../services/vehicle-selector/queries/VehicleYears';
 import { VehicleMakeOption } from './VehicleMake';
 import { VehicleModelOption } from './VehicleModel';
 import update from 'immutability-helper';
 import React from 'react';
-import { VehicleSelectorItem } from '../VehicleSelectorItem';
+import { FilterItem } from '../../filter-bar/FilterItem';
 import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 
-export const VehicleYearSelectorItem: VehicleSelectorItem<VehicleYearSelectorItemProps> = {
+export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
   createInitialState: () => ({
     searchQuery: '',
     selectedOption: undefined,
@@ -33,11 +33,7 @@ export const VehicleYearSelectorItem: VehicleSelectorItem<VehicleYearSelectorIte
   },
 };
 
-export const YearSelector = GqlVehicleSelectorItem<
-  VehicleYearOption,
-  GraphqlVehicleYearVariable,
-  VehicleYearSelectorItemProps
->({
+const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearVariable, VehicleYearFilterItemProps>({
   title: 'Year',
   graphql: {
     query: VEHICLE_SELECTOR_YEARS,
@@ -46,17 +42,16 @@ export const YearSelector = GqlVehicleSelectorItem<
       uvdb_model_id: props.selectedModel?.id,
       limit: 1000,
     }),
-    parseResponseBodies: (data) => {
-      return parseResponseBody(data).map((item) => ({
+    parseResponseBodies: (data) =>
+      getResponseItems(data).map((item) => ({
         type: 'YEAR',
         ...item,
-      }));
-    },
+      })),
   },
   getOptionLabel: (option) => `${option.id}`,
 });
 
-export interface VehicleYearSelectorItemProps extends SearchableListProps<VehicleYearOption> {
+interface VehicleYearFilterItemProps extends SearchableListProps<VehicleYearOption> {
   selectedMake?: VehicleMakeOption;
   selectedModel?: VehicleModelOption;
 }

@@ -1,16 +1,16 @@
 import { SearchableListProps } from '../../common/SearchableList';
 import {
   GraphqlVehicleMakeVariable,
-  parseResponseBody,
+  getResponseItems,
   VEHICLE_SELECTOR_MAKES,
 } from '../../../services/vehicle-selector/queries/VehicleMakes';
 import { VehicleYearOption } from './VehicleYear';
 import update from 'immutability-helper';
 import React from 'react';
-import { VehicleSelectorItem } from '../VehicleSelectorItem';
+import { FilterItem } from '../../filter-bar/FilterItem';
 import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 
-export const VehicleMakeSelectorItem: VehicleSelectorItem<VehiceMakeSelectorItemProps> = {
+export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
   createInitialState: () => ({
     searchQuery: '',
     selectedOption: undefined,
@@ -28,10 +28,10 @@ export const VehicleMakeSelectorItem: VehicleSelectorItem<VehiceMakeSelectorItem
   },
 };
 
-export const MakeSelector = GqlVehicleSelectorItem<
+const MakeSelector = GqlVehicleSelectorItem<
   VehicleMakeOption,
   GraphqlVehicleMakeVariable,
-  VehiceMakeSelectorItemProps
+  VehiceMakeFilterItemProps
 >({
   title: 'Make',
   graphql: {
@@ -41,7 +41,7 @@ export const MakeSelector = GqlVehicleSelectorItem<
       query: props.searchQuery,
     }),
     parseResponseBodies: (data) =>
-      parseResponseBody(data).map((item) => ({
+      getResponseItems(data).map((item) => ({
         type: 'MAKE',
         ...item,
       })),
@@ -49,7 +49,7 @@ export const MakeSelector = GqlVehicleSelectorItem<
   getOptionLabel: (option) => option.name,
 });
 
-export interface VehiceMakeSelectorItemProps extends SearchableListProps<VehicleMakeOption> {
+interface VehiceMakeFilterItemProps extends SearchableListProps<VehicleMakeOption> {
   selectedYear?: VehicleYearOption;
 }
 

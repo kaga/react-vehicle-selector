@@ -1,4 +1,4 @@
-import { parseResponseBody } from '../../../services/vehicle-selector/queries/VehicleModel';
+import { getResponseItems } from '../../../services/vehicle-selector/queries/VehicleModel';
 import {
   GraphqlVehicleModelVariable,
   VEHICLE_SELECTOR_MODELS,
@@ -9,10 +9,10 @@ import { VehicleMakeOption } from './VehicleMake';
 import { VehicleYearOption } from './VehicleYear';
 import update from 'immutability-helper';
 import React from 'react';
-import { VehicleSelectorItem } from '../VehicleSelectorItem';
+import { FilterItem } from '../../filter-bar/FilterItem';
 import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 
-export const VehicleModelSelectorItem: VehicleSelectorItem<VehicleModelSelectorItemProps> = {
+export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
   createInitialState: () => ({
     searchQuery: '',
     selectedOption: undefined,
@@ -34,10 +34,10 @@ export const VehicleModelSelectorItem: VehicleSelectorItem<VehicleModelSelectorI
   },
 };
 
-export const ModelSelector = GqlVehicleSelectorItem<
+const ModelSelector = GqlVehicleSelectorItem<
   VehicleModelOption,
   GraphqlVehicleModelVariable,
-  VehicleModelSelectorItemProps
+  VehicleModelFilterItemProps
 >({
   title: 'Model',
   graphql: {
@@ -52,7 +52,7 @@ export const ModelSelector = GqlVehicleSelectorItem<
       return undefined;
     },
     parseResponseBodies: (data) =>
-      parseResponseBody(data).map((item) => ({
+      getResponseItems(data).map((item) => ({
         type: 'MODEL',
         ...item,
       })),
@@ -60,7 +60,7 @@ export const ModelSelector = GqlVehicleSelectorItem<
   getOptionLabel: (option) => option.name,
 });
 
-export interface VehicleModelSelectorItemProps extends SearchableListProps<VehicleModelOption> {
+interface VehicleModelFilterItemProps extends SearchableListProps<VehicleModelOption> {
   selectedYear?: VehicleYearOption;
   selectedMake?: VehicleMakeOption;
 }

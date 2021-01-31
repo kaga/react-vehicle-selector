@@ -17,7 +17,7 @@ export interface UvdbMake extends IdentifiableModel<number> {
   name: string;
 }
 
-export function parseResponseBody(data: {
+export function getResponseItems(data: {
   uvdb: {
     vehicle_selector: {
       uvdb_makes: {

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { SearchableListProps } from '../common/SearchableList';
 import update from 'immutability-helper';
 import { reduce } from 'lodash';
-import { VehicleSelectorItem } from './VehicleSelectorItem';
+import { FilterItem } from './FilterItem';
 
 /**
  * TODO: When a user changes a previous selection. All other selections that are
@@ -18,8 +18,8 @@ import { VehicleSelectorItem } from './VehicleSelectorItem';
  *
  */
 
-export function VehicleSelector(props: VehicleSelectorProps) {
-  const [state, setState] = useState(initialVehicleSelectorState(props.filters));
+export function FilterBar(props: FilterBarProps) {
+  const [state, setState] = useState(initialFilterItemState(props.filters));
 
   const selectorItems = props.filters.map((element, index) => {
     const selectorItemState = state.get(index);
@@ -46,7 +46,7 @@ export function VehicleSelector(props: VehicleSelectorProps) {
   );
 }
 
-function initialVehicleSelectorState(filters: VehicleSelectorItem<any>[]) {
+function initialFilterItemState(filters: FilterItem<any>[]) {
   return reduce(
     filters,
     (results, filter, index) => {
@@ -57,7 +57,7 @@ function initialVehicleSelectorState(filters: VehicleSelectorItem<any>[]) {
   );
 }
 
-function onSearchQueryUpdated(setState: SetVehicleSelectorState, newQuery: any, index: number) {
+function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index: number) {
   setState((previousState) => {
     const updatedSelectorState = new Map(previousState);
     const previousItemState = previousState.get(index);
@@ -71,8 +71,8 @@ function onSearchQueryUpdated(setState: SetVehicleSelectorState, newQuery: any, 
 }
 
 function onSelectedOptionUpdated(
-  props: VehicleSelectorProps,
-  setState: SetVehicleSelectorState,
+  props: FilterBarProps,
+  setState: SetFilterBarState,
   selectedOption: any,
   index: number,
 ) {
@@ -102,8 +102,8 @@ function onSelectedOptionUpdated(
   });
 }
 
-type SetVehicleSelectorState = React.Dispatch<React.SetStateAction<Map<number, SearchableListProps<any>>>>;
+type SetFilterBarState = React.Dispatch<React.SetStateAction<Map<number, SearchableListProps<any>>>>;
 
-type VehicleSelectorProps = {
-  filters: VehicleSelectorItem<any>[];
-}
+type FilterBarProps = {
+  filters: FilterItem<any>[];
+};

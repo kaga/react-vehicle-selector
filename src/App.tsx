@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Grid } from '@material-ui/core';
-import { VehicleSelector } from './components/vehicle-selector/VehicleSelector';
-import { VehicleYearSelectorItem } from './components/vehicle-selector/items/VehicleYear';
-import { VehicleMakeSelectorItem } from './components/vehicle-selector/items/VehicleMake';
-import { VehicleModelSelectorItem } from './components/vehicle-selector/items/VehicleModel';
+import { FilterBar } from './components/filter-bar/FilterBar';
+import { VehicleYearFilterItem } from './components/vehicle-selector/items/VehicleYear';
+import { VehicleMakeFilterItem } from './components/vehicle-selector/items/VehicleMake';
+import { VehicleModelFilterItem } from './components/vehicle-selector/items/VehicleModel';
 
 function App() {
   const client = new ApolloClient({
@@ -18,15 +18,15 @@ function App() {
       <ApolloProvider client={client}>
         <Grid container spacing={1} direction="column" justify="center">
           <Grid item>
-            <VehicleSelector
-              filters={[VehicleYearSelectorItem, VehicleMakeSelectorItem, VehicleModelSelectorItem]}
-            ></VehicleSelector>
+            <FilterBar
+              filters={[VehicleYearFilterItem, VehicleMakeFilterItem, VehicleModelFilterItem]}
+            ></FilterBar>
           </Grid>
 
           <Grid item>
-            <VehicleSelector
-              filters={[VehicleMakeSelectorItem, VehicleModelSelectorItem, VehicleYearSelectorItem]}
-            ></VehicleSelector>
+            <FilterBar
+              filters={[VehicleMakeFilterItem, VehicleModelFilterItem, VehicleYearFilterItem]}
+            ></FilterBar>
           </Grid>
         </Grid>
       </ApolloProvider>
