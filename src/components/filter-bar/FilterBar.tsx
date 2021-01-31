@@ -22,19 +22,19 @@ export function FilterBar(props: FilterBarProps) {
 
   useEffect(() => {
     props.filters.forEach((element, elementIndex) => {
-      const previousItemState = state.get(elementIndex);
-      const updatedItemState = element.updateFilterItemState(convertState(state), previousItemState);
+      const previousItemState = state[elementIndex];
+      const updatedItemState = element.updateFilterItemState(state, previousItemState);
 
       if (updatedItemState && !isEqual(previousItemState, updatedItemState)) {
-        const updatedSelectorState = new Map(state);
-        updatedSelectorState.set(elementIndex, updatedItemState);
+        const updatedSelectorState = [...state];
+        updatedSelectorState[elementIndex] = updatedItemState;
         setState(updatedSelectorState);
       }
     });
   }, [props.filters, state]);
 
   const filterItemElements = props.filters.map((element, index) => {
-    const filterItemState = state.get(index);
+    const filterItemState = state[index];
     return (
       <Grid item xs key={`filter-bar-item-grid-${index}`}>
         {element.createElement({
@@ -61,26 +61,29 @@ export function FilterBar(props: FilterBarProps) {
 function initialFilterItemState(filters: FilterItem<any>[]) {
   const initialState = reduce(
     filters,
-    (results, filter, index) => results.set(index, filter.createInitialState()),
-    new Map<number, FilterBarItemState>(),
+    (results, filter, index) => {
+      results[index] = filter.createInitialState();
+      return results;
+    },
+    new Array<FilterBarItemState>(),
   );
   filters.forEach((element, elementIndex) => {
-    const previousItemState = initialState.get(elementIndex);
-    const updatedItemState = element.updateFilterItemState(convertState(initialState), previousItemState);
-    initialState.set(elementIndex, updatedItemState);
+    const previousItemState = initialState[elementIndex];
+    const updatedItemState = element.updateFilterItemState(initialState, previousItemState);
+    initialState[elementIndex] = updatedItemState;
   });
   return initialState;
 }
 
 function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index: number) {
   setState((previousState) => {
-    const updatedSelectorState = new Map(previousState);
-    const previousItemState = previousState.get(index);
+    const updatedSelectorState = [...previousState];
+    const previousItemState = previousState[index];
     const updatedItemState = update(previousItemState, {
       searchQuery: { $set: newQuery },
     }) as FilterBarItemState;
 
-    updatedSelectorState.set(index, updatedItemState);
+    updatedSelectorState[index] = updatedItemState;
     return updatedSelectorState;
   });
 }
@@ -92,24 +95,24 @@ function onSelectedOptionUpdated(
   index: number,
 ) {
   setState((previousState) => {
-    const updatedSelectorState = new Map(previousState);
-    const previousItemState = previousState.get(index);
+    const updatedSelectorState = [...previousState];
+    const previousItemState = previousState[index];
     const updatedSelectedItemState = update(previousItemState, {
       selectedOption: { $set: selectedOption },
     }) as FilterBarItemState;
 
-    updatedSelectorState.set(index, updatedSelectedItemState);
+    updatedSelectorState[index] = updatedSelectedItemState;
 
     props.filters.forEach((element, elementIndex) => {
-      const previousItemState = previousState.get(elementIndex);
+      const previousItemState = previousState[elementIndex];
       const updatedItemState = element.onOptionSelected(
-        convertState(updatedSelectorState),
+        updatedSelectorState,
         updatedSelectedItemState,
         previousItemState,
       );
 
       if (updatedItemState) {
-        updatedSelectorState.set(elementIndex, updatedItemState);
+        updatedSelectorState[elementIndex] = updatedItemState;
       }
     });
 
@@ -117,16 +120,9 @@ function onSelectedOptionUpdated(
   });
 }
 
-function convertState(internalState: InternalFilterBarState): FilterBarState {
-  const state = new Array(internalState.size);
-  internalState.forEach((value, key) => (state[key] = value));
-  return state;
-}
-
 export type FilterBarState = FilterBarItemState[];
-type InternalFilterBarState = Map<number, FilterBarItemState>;
 
-type SetFilterBarState = React.Dispatch<React.SetStateAction<InternalFilterBarState>>;
+type SetFilterBarState = React.Dispatch<React.SetStateAction<FilterBarState>>;
 
 type FilterBarProps = {
   filters: FilterItem<any>[];
