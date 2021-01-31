@@ -1,6 +1,6 @@
 import { SearchableListProps } from '../../common/SearchableList';
 import {
-  GraphqlVehicleYearVariable,
+  GraphqlVehicleYearsVariable,
   getResponseItems,
   VEHICLE_SELECTOR_YEARS,
 } from '../../../services/vehicle-selector/queries/VehicleYears';
@@ -33,7 +33,7 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
   },
 };
 
-const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearVariable, VehicleYearFilterItemProps>({
+const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>({
   title: 'Year',
   graphql: {
     query: VEHICLE_SELECTOR_YEARS,

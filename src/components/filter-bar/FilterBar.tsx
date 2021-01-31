@@ -21,12 +21,12 @@ import { FilterItem } from './FilterItem';
 export function FilterBar(props: FilterBarProps) {
   const [state, setState] = useState(initialFilterItemState(props.filters));
 
-  const selectorItems = props.filters.map((element, index) => {
-    const selectorItemState = state.get(index);
+  const filterItemElements = props.filters.map((element, index) => {
+    const filterItemState = state.get(index);
     return (
-      <Grid item xs>
+      <Grid item xs key={`filter-bar-item-grid-${index}`}>
         {element.createElement({
-          ...selectorItemState,
+          ...filterItemState,
           onSearchQueryUpdated: (newQuery: any) => onSearchQueryUpdated(setState, newQuery, index),
           onSelectedOptionUpdated: (selectedOption: any) =>
             onSelectedOptionUpdated(props, setState, selectedOption, index),
@@ -39,7 +39,7 @@ export function FilterBar(props: FilterBarProps) {
     <Container maxWidth="lg">
       <Paper>
         <Grid container direction="row" justify="center" spacing={0}>
-          {selectorItems}
+          {filterItemElements}
         </Grid>
       </Paper>
     </Container>
@@ -49,10 +49,7 @@ export function FilterBar(props: FilterBarProps) {
 function initialFilterItemState(filters: FilterItem<any>[]) {
   return reduce(
     filters,
-    (results, filter, index) => {
-      results.set(index, filter.createInitialState());
-      return results;
-    },
+    (results, filter, index) => results.set(index, filter.createInitialState()),
     new Map<number, SearchableListProps<any>>(),
   );
 }
@@ -90,7 +87,7 @@ function onSelectedOptionUpdated(
   props.filters.forEach((element, elementIndex) => {
     setState((previousState) => {
       const updatedSelectorState = new Map(previousState);
-      const previousItemState = previousState.get(index);
+      const previousItemState = previousState.get(elementIndex);
       const updatedItemState = element.onOptionSelected(previousItemState, selectedOption);
 
       if (updatedItemState) {

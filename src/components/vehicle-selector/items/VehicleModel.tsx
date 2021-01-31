@@ -1,8 +1,8 @@
-import { getResponseItems } from '../../../services/vehicle-selector/queries/VehicleModel';
+import { getResponseItems } from '../../../services/vehicle-selector/queries/VehicleModels';
 import {
-  GraphqlVehicleModelVariable,
+  GraphqlVehicleModelsVariable,
   VEHICLE_SELECTOR_MODELS,
-} from '../../../services/vehicle-selector/queries/VehicleModel';
+} from '../../../services/vehicle-selector/queries/VehicleModels';
 
 import { SearchableListProps } from '../../common/SearchableList';
 import { VehicleMakeOption } from './VehicleMake';
@@ -36,7 +36,7 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
 
 const ModelSelector = GqlVehicleSelectorItem<
   VehicleModelOption,
-  GraphqlVehicleModelVariable,
+  GraphqlVehicleModelsVariable,
   VehicleModelFilterItemProps
 >({
   title: 'Model',

@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { IdentifiableModel } from '../../IdentifiableModel';
 import { FRAGEMENT_LEGACY_PAGINATION_CURSOR } from './Fragments';
 
-export interface GraphqlVehicleYearVariable {
+export interface GraphqlVehicleYearsVariable {
   uvdb_make_id?: number;
   uvdb_model_id?: number;
   limit?: number;

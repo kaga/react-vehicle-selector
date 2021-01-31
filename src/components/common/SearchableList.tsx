@@ -32,6 +32,7 @@ export function SearchableList<ListOptionType extends ListOption>({
   const items = options?.map((option) => {
     return (
       <ListItem
+        key={`${title}-${option.id}`}
         selected={option.id === selectedOption?.id}
         button
         disabled={disabled}

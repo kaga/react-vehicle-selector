@@ -1,6 +1,6 @@
 import { SearchableListProps } from '../../common/SearchableList';
 import {
-  GraphqlVehicleMakeVariable,
+  GraphqlVehicleMakesVariable,
   getResponseItems,
   VEHICLE_SELECTOR_MAKES,
 } from '../../../services/vehicle-selector/queries/VehicleMakes';
@@ -30,7 +30,7 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
 
 const MakeSelector = GqlVehicleSelectorItem<
   VehicleMakeOption,
-  GraphqlVehicleMakeVariable,
+  GraphqlVehicleMakesVariable,
   VehiceMakeFilterItemProps
 >({
   title: 'Make',

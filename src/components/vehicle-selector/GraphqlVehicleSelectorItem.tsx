@@ -27,7 +27,7 @@ export function GqlVehicleSelectorItem<
 
     const options = data ? graphql.parseResponseBodies(data) : [];
 
-    return <SearchableList {...props} title={title} options={options} getOptionLabel={getOptionLabel} />;
+    return <SearchableList {...props} key={title} title={title} options={options} getOptionLabel={getOptionLabel} />;
   };
 }
 
