@@ -9,7 +9,7 @@ import { VehicleModelOption } from './VehicleModel';
 import update from 'immutability-helper';
 import React from 'react';
 import { FilterItem } from '../../filter-bar/FilterItem';
-import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
+import { GraphqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 import { indexOf, isUndefined } from 'lodash';
 
 export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
@@ -56,7 +56,7 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
   },
 };
 
-const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>(
+const YearSelector = GraphqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>(
   {
     title: 'Year',
     graphql: {
@@ -64,7 +64,7 @@ const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYea
       getQueryVariables: (props) => ({
         uvdb_make_id: props.selectedMake?.id,
         uvdb_model_id: props.selectedModel?.id,
-        limit: 1000,
+        limit: 1000, //TODO implement pagination 
       }),
       parseResponseBodies: (data) =>
         getResponseItems(data).map((item) => ({

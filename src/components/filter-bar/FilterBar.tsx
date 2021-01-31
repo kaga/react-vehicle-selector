@@ -4,18 +4,9 @@ import update from 'immutability-helper';
 import { isEqual, reduce } from 'lodash';
 import { FilterBarItemState, FilterItem } from './FilterItem';
 
-/**
- * TODO: When a user changes a previous selection. All other selections that are
- * dependent on that selection should either reset or otherwise inform the
- * user of the now invalid selections. For example, if the user has selected
- * "Toyota" for make and "Corolla" for model and then changes their
- * selection for make to "Honda" the previous make selection is no longer
- * valid.
- *
- * TODO: If the second or third options only has one possible selection.
- * Automatically select it for the user.
- *
- */
+//TODO check output of 2021 SUZUKI
+//TODO inform the user selected a vehicle
+//TODO it is doing extra API ?
 
 export function FilterBar(props: FilterBarProps) {
   const [state, setState] = useState(initialFilterItemState(props.filters));

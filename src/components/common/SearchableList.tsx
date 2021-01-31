@@ -1,5 +1,6 @@
 import { makeStyles, Theme, createStyles, Box, List, ListItem, ListItemText, TextField } from '@material-ui/core';
-import React from 'react';
+import { first, isUndefined, size } from 'lodash';
+import React, { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,10 +29,10 @@ export function SearchableList<ListOptionType extends ListOption>({
 }: SearchableListProps<ListOptionType>) {
   const classes = useStyles();
 
-  const items = options?.map((option) => {
+  const items = options?.map((option, index) => {
     return (
       <ListItem
-        key={`${title}-${option.id}`}
+        key={`${title}-${index}-${option.id}`}
         selected={option.id === selectedOption?.id}
         button
         disabled={disabled}
@@ -40,6 +41,15 @@ export function SearchableList<ListOptionType extends ListOption>({
         <ListItemText primary={getOptionLabel?.(option)} />
       </ListItem>
     );
+  });
+
+  const firstOption = first(options);
+  const shouldUpdateSelectedOption = isUndefined(selectedOption) && size(options) === 1 && firstOption;
+
+  useEffect(() => {
+    if (shouldUpdateSelectedOption && firstOption) {
+      onSelectedOptionUpdated?.(firstOption);
+    }
   });
 
   return (

@@ -8,7 +8,7 @@ import { VehicleYearOption } from './VehicleYear';
 import update from 'immutability-helper';
 import React from 'react';
 import { FilterItem } from '../../filter-bar/FilterItem';
-import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
+import { GraphqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 import { indexOf, isUndefined } from 'lodash';
 
 export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
@@ -50,7 +50,7 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
   },
 };
 
-const MakeSelector = GqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehiceMakeFilterItemProps>({
+const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehiceMakeFilterItemProps>({
   title: 'Make',
   graphql: {
     query: VEHICLE_SELECTOR_MAKES,

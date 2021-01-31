@@ -4,7 +4,7 @@ import { isUndefined } from 'lodash';
 import React from 'react';
 import { ListOption, SearchableList, SearchableListProps } from '../common/SearchableList';
 
-export function GqlVehicleSelectorItem<
+export function GraphqlVehicleSelectorItem<
   T extends ListOption,
   GraphqlQueryVariableType,
   VehicleSelectorItemPropsType extends SearchableListProps<T>
@@ -27,7 +27,6 @@ export function GqlVehicleSelectorItem<
     return (
       <SearchableList
         {...props}
-        key={`SearchableList-${title}`}
         title={title}
         options={options}
         getOptionLabel={getOptionLabel}

@@ -10,7 +10,7 @@ import { VehicleYearOption } from './VehicleYear';
 import update from 'immutability-helper';
 import React from 'react';
 import { FilterItem } from '../../filter-bar/FilterItem';
-import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
+import { GraphqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 import { indexOf, isUndefined } from 'lodash';
 
 export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
@@ -57,7 +57,7 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
   },
 };
 
-const ModelSelector = GqlVehicleSelectorItem<
+const ModelSelector = GraphqlVehicleSelectorItem<
   VehicleModelOption,
   GraphqlVehicleModelsVariable,
   VehicleModelFilterItemProps
