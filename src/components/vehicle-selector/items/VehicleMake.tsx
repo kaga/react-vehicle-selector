@@ -26,13 +26,12 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
     }
     return undefined;
   },
+  onViewUpdated: (props) => {
+    return undefined;
+  },
 };
 
-const MakeSelector = GqlVehicleSelectorItem<
-  VehicleMakeOption,
-  GraphqlVehicleMakesVariable,
-  VehiceMakeFilterItemProps
->({
+const MakeSelector = GqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehiceMakeFilterItemProps>({
   title: 'Make',
   graphql: {
     query: VEHICLE_SELECTOR_MAKES,

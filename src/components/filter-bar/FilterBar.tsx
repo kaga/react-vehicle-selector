@@ -1,8 +1,8 @@
 import { Container, Paper, Grid } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchableListProps } from '../common/SearchableList';
 import update from 'immutability-helper';
-import { reduce } from 'lodash';
+import { isEqual, reduce } from 'lodash';
 import { FilterItem } from './FilterItem';
 
 /**
@@ -20,6 +20,19 @@ import { FilterItem } from './FilterItem';
 
 export function FilterBar(props: FilterBarProps) {
   const [state, setState] = useState(initialFilterItemState(props.filters));
+
+  useEffect(() => {
+    props.filters.forEach((element, elementIndex) => {
+      const previousItemState = state.get(elementIndex);
+      const updatedItemState = element.onViewUpdated(previousItemState);
+
+      if (updatedItemState && !isEqual(previousItemState, updatedItemState)) {
+        const updatedSelectorState = new Map(state);
+        updatedSelectorState.set(elementIndex, updatedItemState);
+        setState(updatedSelectorState);
+      }
+    });
+  }, [props.filters, state]);
 
   const filterItemElements = props.filters.map((element, index) => {
     const filterItemState = state.get(index);

@@ -11,6 +11,7 @@ import update from 'immutability-helper';
 import React from 'react';
 import { FilterItem } from '../../filter-bar/FilterItem';
 import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
+import { isUndefined } from 'lodash';
 
 export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
   createInitialState: () => ({
@@ -32,6 +33,12 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
     }
     return undefined;
   },
+  onViewUpdated: (props) => {
+     const disabled = isUndefined(props.selectedMake)
+     return update(props, {
+       disabled: { $set: disabled }
+     });
+  }
 };
 
 const ModelSelector = GqlVehicleSelectorItem<

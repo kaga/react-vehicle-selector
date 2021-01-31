@@ -31,6 +31,9 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
     }
     return undefined;
   },
+  onViewUpdated: (props) => {
+    return undefined;
+  },
 };
 
 const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>({

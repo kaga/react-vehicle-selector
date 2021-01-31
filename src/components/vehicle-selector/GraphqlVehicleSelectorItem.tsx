@@ -22,12 +22,20 @@ export function GqlVehicleSelectorItem<
       skip: shouldSkip,
     });
 
-    if (loading) return <p>Loading...</p>;
+    if (!shouldSkip && loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
     const options = data ? graphql.parseResponseBodies(data) : [];
 
-    return <SearchableList {...props} key={title} title={title} options={options} getOptionLabel={getOptionLabel} />;
+    return (
+      <SearchableList
+        {...props}
+        key={`SearchableList-${title}`}
+        title={title}
+        options={options}
+        getOptionLabel={getOptionLabel}
+      />
+    );
   };
 }
 
