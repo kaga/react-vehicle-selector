@@ -30,10 +30,12 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
         case 'MAKE':
           return update(props, {
             selectedMake: { $set: selectedOption as VehicleMakeOption },
+            selectedOption: { $set: undefined }
           });
         case 'YEAR':
           return update(props, {
             selectedYear: { $set: selectedOption as VehicleYearOption },
+            selectedOption: { $set: undefined }
           });
       }
     }
@@ -63,11 +65,12 @@ const ModelSelector = GqlVehicleSelectorItem<
   title: 'Model',
   graphql: {
     query: VEHICLE_SELECTOR_MODELS,
-    getQueryVariables: ({ selectedMake, selectedYear }) => {
+    getQueryVariables: ({ selectedMake, selectedYear, searchQuery }) => {
       if (selectedMake) {
         return {
           uvdb_year_id: selectedYear?.id,
           uvdb_make_id: selectedMake.id,
+          query: searchQuery
         };
       }
       return undefined;

@@ -28,6 +28,7 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
         case 'YEAR':
           return update(props, {
             selectedYear: { $set: selectedOption as VehicleYearOption },
+            selectedOption: { $set: undefined }
           });
       }
     }

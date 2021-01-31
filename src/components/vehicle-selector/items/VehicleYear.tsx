@@ -29,10 +29,12 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
         case 'MAKE':
           return update(props, {
             selectedMake: { $set: selectedOption as VehicleMakeOption },
+            selectedOption: { $set: undefined },
           });
         case 'MODEL':
           return update(props, {
             selectedModel: { $set: selectedOption as VehicleModelOption },
+            selectedOption: { $set: undefined },
           });
       }
     }
