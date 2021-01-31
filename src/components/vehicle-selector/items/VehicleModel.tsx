@@ -20,22 +20,22 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
     disabled: false,
   }),
   createElement: (props) => React.createElement(ModelSelector, props),
-  onOptionSelected: (filterBarState, updatedFilterItem, props) => {
+  onFilterItemUpdated: (filterBarState, updatedFilterItem, props) => {
     const updatedItemIndex = indexOf(filterBarState, updatedFilterItem);
-    const currentitemIndex = indexOf(filterBarState, props);
+    const currentItemIndex = indexOf(filterBarState, props);
     const selectedOption = updatedFilterItem.selectedOption;
 
-    if (selectedOption && updatedItemIndex < currentitemIndex) {
+    if (selectedOption && updatedItemIndex < currentItemIndex) {
       switch (selectedOption.type) {
         case 'MAKE':
           return update(props, {
             selectedMake: { $set: selectedOption as VehicleMakeOption },
-            selectedOption: { $set: undefined }
+            selectedOption: { $set: undefined },
           });
         case 'YEAR':
           return update(props, {
             selectedYear: { $set: selectedOption as VehicleYearOption },
-            selectedOption: { $set: undefined }
+            selectedOption: { $set: undefined },
           });
       }
     }
@@ -70,7 +70,7 @@ const ModelSelector = GraphqlVehicleSelectorItem<
         return {
           uvdb_year_id: selectedYear?.id,
           uvdb_make_id: selectedMake.id,
-          query: searchQuery
+          query: searchQuery,
         };
       }
       return undefined;

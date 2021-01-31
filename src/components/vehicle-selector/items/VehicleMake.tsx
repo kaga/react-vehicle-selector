@@ -11,19 +11,19 @@ import { FilterItem } from '../../filter-bar/FilterItem';
 import { GraphqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
 import { indexOf, isUndefined } from 'lodash';
 
-export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
+export const VehicleMakeFilterItem: FilterItem<VehicleMakeFilterItemProps> = {
   createInitialState: () => ({
     searchQuery: '',
     selectedOption: undefined,
     disabled: false,
   }),
   createElement: (props) => React.createElement(MakeSelector, props),
-  onOptionSelected: (filterBarState, updatedFilterItem, props) => {
+  onFilterItemUpdated: (filterBarState, updatedFilterItem, props) => {
     const updatedItemIndex = indexOf(filterBarState, updatedFilterItem);
-    const currentitemIndex = indexOf(filterBarState, props);
+    const currentItemIndex = indexOf(filterBarState, props);
     const selectedOption = updatedFilterItem.selectedOption;
 
-    if (selectedOption && updatedItemIndex < currentitemIndex) {
+    if (selectedOption && updatedItemIndex < currentItemIndex) {
       switch (selectedOption.type) {
         case 'YEAR':
           return update(props, {
@@ -50,7 +50,7 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
   },
 };
 
-const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehiceMakeFilterItemProps>({
+const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehicleMakeFilterItemProps>({
   title: 'Make',
   graphql: {
     query: VEHICLE_SELECTOR_MAKES,
@@ -67,7 +67,7 @@ const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicl
   getOptionLabel: (option) => option.name,
 });
 
-interface VehiceMakeFilterItemProps extends SearchableListProps<VehicleMakeOption> {
+interface VehicleMakeFilterItemProps extends SearchableListProps<VehicleMakeOption> {
   selectedYear?: VehicleYearOption;
 }
 

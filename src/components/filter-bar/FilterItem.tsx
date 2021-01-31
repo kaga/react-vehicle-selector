@@ -4,7 +4,7 @@ export interface FilterItem<StateType extends FilterBarItemState> {
   createInitialState(): StateType;
   createElement(props: StateType): JSX.Element;
   updateFilterItemState(filterBarState: FilterBarState, props: StateType): StateType;
-  onOptionSelected(
+  onFilterItemUpdated(
     filterBarState: FilterBarState,
     updatedFilterItem: FilterBarItemState,
     props: StateType,

@@ -19,12 +19,12 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
     disabled: false,
   }),
   createElement: (props) => React.createElement(YearSelector, props),
-  onOptionSelected: (filterBarState, updatedFilterItem, props) => {
+  onFilterItemUpdated: (filterBarState, updatedFilterItem, props) => {
     const updatedItemIndex = indexOf(filterBarState, updatedFilterItem);
-    const currentitemIndex = indexOf(filterBarState, props);
+    const currentItemIndex = indexOf(filterBarState, props);
     const selectedOption = updatedFilterItem.selectedOption;
 
-    if (selectedOption && updatedItemIndex < currentitemIndex) {
+    if (selectedOption && updatedItemIndex < currentItemIndex) {
       switch (selectedOption.type) {
         case 'MAKE':
           return update(props, {
