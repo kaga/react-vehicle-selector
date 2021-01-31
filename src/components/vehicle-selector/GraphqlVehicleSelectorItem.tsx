@@ -15,7 +15,7 @@ export function GqlVehicleSelectorItem<
 }: GqlVehicleSelectorItemParameters<T, GraphqlQueryVariableType, VehicleSelectorItemPropsType>) {
   return function Component(props: VehicleSelectorItemPropsType) {
     const queryVariables = graphql.getQueryVariables(props);
-    const shouldSkip = isUndefined(queryVariables);
+    const shouldSkip = props.disabled || isUndefined(queryVariables);
 
     const { loading, error, data } = useQuery(graphql.query, {
       variables: queryVariables,

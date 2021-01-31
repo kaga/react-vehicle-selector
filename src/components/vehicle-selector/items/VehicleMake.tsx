@@ -9,6 +9,7 @@ import update from 'immutability-helper';
 import React from 'react';
 import { FilterItem } from '../../filter-bar/FilterItem';
 import { GqlVehicleSelectorItem } from '../GraphqlVehicleSelectorItem';
+import { indexOf, isUndefined } from 'lodash';
 
 export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
   createInitialState: () => ({
@@ -26,8 +27,18 @@ export const VehicleMakeFilterItem: FilterItem<VehiceMakeFilterItemProps> = {
     }
     return undefined;
   },
-  onViewUpdated: (props) => {
-    return undefined;
+  updateFilterItemState: (filterBarState, props) => {
+    let disabled = false;
+    const currentItemIndex = indexOf(filterBarState, props);
+
+    if (currentItemIndex > 0) {
+      const previousFilterItem = filterBarState[currentItemIndex - 1];
+      disabled = disabled || isUndefined(previousFilterItem.selectedOption);
+    }
+
+    return update(props, {
+      disabled: { $set: disabled },
+    });
   },
 };
 

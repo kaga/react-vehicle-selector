@@ -24,7 +24,7 @@ export function FilterBar(props: FilterBarProps) {
   useEffect(() => {
     props.filters.forEach((element, elementIndex) => {
       const previousItemState = state.get(elementIndex);
-      const updatedItemState = element.onViewUpdated(previousItemState);
+      const updatedItemState = element.updateFilterItemState(convertState(state), previousItemState);
 
       if (updatedItemState && !isEqual(previousItemState, updatedItemState)) {
         const updatedSelectorState = new Map(state);
@@ -60,11 +60,17 @@ export function FilterBar(props: FilterBarProps) {
 }
 
 function initialFilterItemState(filters: FilterItem<any>[]) {
-  return reduce(
+  const initialState = reduce(
     filters,
     (results, filter, index) => results.set(index, filter.createInitialState()),
     new Map<number, SearchableListProps<any>>(),
   );
+  filters.forEach((element, elementIndex) => {
+    const previousItemState = initialState.get(elementIndex);
+    const updatedItemState = element.updateFilterItemState(convertState(initialState), previousItemState);
+    initialState.set(elementIndex, updatedItemState);
+  })
+  return initialState
 }
 
 function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index: number) {
@@ -112,7 +118,16 @@ function onSelectedOptionUpdated(
   });
 }
 
-type SetFilterBarState = React.Dispatch<React.SetStateAction<Map<number, SearchableListProps<any>>>>;
+function convertState(internalState: InternalFilterBarState): FilterBarState {
+  const state = new Array(internalState.size);
+  internalState.forEach((value, key) => state[key] = value)
+  return state;
+}
+
+//TODO remove SearchableListProps
+export type FilterBarState = SearchableListProps<any>[];
+type InternalFilterBarState = Map<number, SearchableListProps<any>>;
+type SetFilterBarState = React.Dispatch<React.SetStateAction<InternalFilterBarState>>;
 
 type FilterBarProps = {
   filters: FilterItem<any>[];
