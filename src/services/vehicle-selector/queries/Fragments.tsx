@@ -1,4 +1,4 @@
-export const FRAGEMENT_LEGACY_PAGINATION_CURSOR = `
+export const FRAGMENT_LEGACY_PAGINATION_CURSOR = `
 fragment legacyPaginationCursor on LegacyPaginationCursor {
     currentPage
     perPage

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { IdentifiableModel } from '../../IdentifiableModel';
-import { FRAGEMENT_LEGACY_PAGINATION_CURSOR, FRAGMENT_UVDB_I18N } from './Fragments';
+import { FRAGMENT_LEGACY_PAGINATION_CURSOR, FRAGMENT_UVDB_I18N } from './Fragments';
 
 export interface GraphqlVehicleModelsVariable {
   includeLocalization?: number;
@@ -66,6 +66,6 @@ export const VEHICLE_SELECTOR_MODELS = gql`
       }
     }
   }
-  ${FRAGEMENT_LEGACY_PAGINATION_CURSOR}
+  ${FRAGMENT_LEGACY_PAGINATION_CURSOR}
   ${FRAGMENT_UVDB_I18N}
 `;
