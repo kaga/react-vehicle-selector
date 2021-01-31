@@ -17,13 +17,10 @@ export function GqlVehicleSelectorItem<
     const queryVariables = graphql.getQueryVariables(props);
     const shouldSkip = props.disabled || isUndefined(queryVariables);
 
-    const { loading, error, data } = useQuery(graphql.query, {
+    const { data } = useQuery(graphql.query, {
       variables: queryVariables,
       skip: shouldSkip,
     });
-
-    if (!shouldSkip && loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
 
     const options = data ? graphql.parseResponseBodies(data) : [];
 

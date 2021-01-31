@@ -19,51 +19,60 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
     disabled: false,
   }),
   createElement: (props) => React.createElement(YearSelector, props),
-  onOptionSelected: (props, selectedOption) => {
-    switch (selectedOption.type) {
-      case 'MAKE':
-        return update(props, {
-          selectedMake: { $set: selectedOption as VehicleMakeOption },
-        });
-      case 'MODEL':
-        return update(props, {
-          selectedModel: { $set: selectedOption as VehicleModelOption },
-        });
+  onOptionSelected: (filterBarState, updatedFilterItem, props) => {
+    const updatedItemIndex = indexOf(filterBarState, updatedFilterItem);
+    const currentitemIndex = indexOf(filterBarState, props);
+    const selectedOption = updatedFilterItem.selectedOption;
+
+    if (selectedOption && updatedItemIndex < currentitemIndex) {
+      switch (selectedOption.type) {
+        case 'MAKE':
+          return update(props, {
+            selectedMake: { $set: selectedOption as VehicleMakeOption },
+          });
+        case 'MODEL':
+          return update(props, {
+            selectedModel: { $set: selectedOption as VehicleModelOption },
+          });
+      }
     }
+
     return undefined;
   },
   updateFilterItemState: (filterBarState, props) => {
-    let disabled = false; 
+    let disabled = false;
     const currentItemIndex = indexOf(filterBarState, props);
-    
+
     if (currentItemIndex > 0) {
-      const previousFilterItem = filterBarState[currentItemIndex-1];
+      const previousFilterItem = filterBarState[currentItemIndex - 1];
       disabled = disabled || isUndefined(previousFilterItem.selectedOption);
     }
-    
+
     return update(props, {
       disabled: { $set: disabled },
     });
   },
 };
 
-const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>({
-  title: 'Year',
-  graphql: {
-    query: VEHICLE_SELECTOR_YEARS,
-    getQueryVariables: (props) => ({
-      uvdb_make_id: props.selectedMake?.id,
-      uvdb_model_id: props.selectedModel?.id,
-      limit: 1000,
-    }),
-    parseResponseBodies: (data) =>
-      getResponseItems(data).map((item) => ({
-        type: 'YEAR',
-        ...item,
-      })),
+const YearSelector = GqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>(
+  {
+    title: 'Year',
+    graphql: {
+      query: VEHICLE_SELECTOR_YEARS,
+      getQueryVariables: (props) => ({
+        uvdb_make_id: props.selectedMake?.id,
+        uvdb_model_id: props.selectedModel?.id,
+        limit: 1000,
+      }),
+      parseResponseBodies: (data) =>
+        getResponseItems(data).map((item) => ({
+          type: 'YEAR',
+          ...item,
+        })),
+    },
+    getOptionLabel: (option) => `${option.id}`,
   },
-  getOptionLabel: (option) => `${option.id}`,
-});
+);
 
 interface VehicleYearFilterItemProps extends SearchableListProps<VehicleYearOption> {
   selectedMake?: VehicleMakeOption;

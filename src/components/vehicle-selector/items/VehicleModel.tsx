@@ -20,28 +20,35 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
     disabled: false,
   }),
   createElement: (props) => React.createElement(ModelSelector, props),
-  onOptionSelected: (props, selectedOption) => {
-    switch (selectedOption.type) {
-      case 'MAKE':
-        return update(props, {
-          selectedMake: { $set: selectedOption as VehicleMakeOption },
-        });
-      case 'YEAR':
-        return update(props, {
-          selectedYear: { $set: selectedOption as VehicleYearOption },
-        });
+  onOptionSelected: (filterBarState, updatedFilterItem, props) => {
+    const updatedItemIndex = indexOf(filterBarState, updatedFilterItem);
+    const currentitemIndex = indexOf(filterBarState, props);
+    const selectedOption = updatedFilterItem.selectedOption;
+
+    if (selectedOption && updatedItemIndex < currentitemIndex) {
+      switch (selectedOption.type) {
+        case 'MAKE':
+          return update(props, {
+            selectedMake: { $set: selectedOption as VehicleMakeOption },
+          });
+        case 'YEAR':
+          return update(props, {
+            selectedYear: { $set: selectedOption as VehicleYearOption },
+          });
+      }
     }
+
     return undefined;
   },
   updateFilterItemState: (filterBarState, props) => {
-    let disabled = isUndefined(props.selectedMake); 
+    let disabled = isUndefined(props.selectedMake);
     const currentItemIndex = indexOf(filterBarState, props);
-    
+
     if (currentItemIndex > 0) {
-      const previousFilterItem = filterBarState[currentItemIndex-1];
+      const previousFilterItem = filterBarState[currentItemIndex - 1];
       disabled = disabled || isUndefined(previousFilterItem.selectedOption);
     }
-    
+
     return update(props, {
       disabled: { $set: disabled },
     });

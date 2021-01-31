@@ -1,9 +1,8 @@
 import { Container, Paper, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { SearchableListProps } from '../common/SearchableList';
 import update from 'immutability-helper';
 import { isEqual, reduce } from 'lodash';
-import { FilterItem } from './FilterItem';
+import { FilterBarItemState, FilterItem } from './FilterItem';
 
 /**
  * TODO: When a user changes a previous selection. All other selections that are
@@ -63,14 +62,14 @@ function initialFilterItemState(filters: FilterItem<any>[]) {
   const initialState = reduce(
     filters,
     (results, filter, index) => results.set(index, filter.createInitialState()),
-    new Map<number, SearchableListProps<any>>(),
+    new Map<number, FilterBarItemState>(),
   );
   filters.forEach((element, elementIndex) => {
     const previousItemState = initialState.get(elementIndex);
     const updatedItemState = element.updateFilterItemState(convertState(initialState), previousItemState);
     initialState.set(elementIndex, updatedItemState);
-  })
-  return initialState
+  });
+  return initialState;
 }
 
 function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index: number) {
@@ -79,7 +78,7 @@ function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index:
     const previousItemState = previousState.get(index);
     const updatedItemState = update(previousItemState, {
       searchQuery: { $set: newQuery },
-    }) as SearchableListProps<any>;
+    }) as FilterBarItemState;
 
     updatedSelectorState.set(index, updatedItemState);
     return updatedSelectorState;
@@ -95,38 +94,38 @@ function onSelectedOptionUpdated(
   setState((previousState) => {
     const updatedSelectorState = new Map(previousState);
     const previousItemState = previousState.get(index);
-    const updatedItemState = update(previousItemState, {
+    const updatedSelectedItemState = update(previousItemState, {
       selectedOption: { $set: selectedOption },
-    }) as SearchableListProps<any>;
+    }) as FilterBarItemState;
 
-    updatedSelectorState.set(index, updatedItemState);
-    return updatedSelectorState;
-  });
+    updatedSelectorState.set(index, updatedSelectedItemState);
 
-  props.filters.forEach((element, elementIndex) => {
-    setState((previousState) => {
-      const updatedSelectorState = new Map(previousState);
+    props.filters.forEach((element, elementIndex) => {
       const previousItemState = previousState.get(elementIndex);
-      const updatedItemState = element.onOptionSelected(previousItemState, selectedOption);
+      const updatedItemState = element.onOptionSelected(
+        convertState(updatedSelectorState),
+        updatedSelectedItemState,
+        previousItemState,
+      );
 
       if (updatedItemState) {
         updatedSelectorState.set(elementIndex, updatedItemState);
       }
-
-      return updatedSelectorState;
     });
+
+    return updatedSelectorState;
   });
 }
 
 function convertState(internalState: InternalFilterBarState): FilterBarState {
   const state = new Array(internalState.size);
-  internalState.forEach((value, key) => state[key] = value)
+  internalState.forEach((value, key) => (state[key] = value));
   return state;
 }
 
-//TODO remove SearchableListProps
-export type FilterBarState = SearchableListProps<any>[];
-type InternalFilterBarState = Map<number, SearchableListProps<any>>;
+export type FilterBarState = FilterBarItemState[];
+type InternalFilterBarState = Map<number, FilterBarItemState>;
+
 type SetFilterBarState = React.Dispatch<React.SetStateAction<InternalFilterBarState>>;
 
 type FilterBarProps = {

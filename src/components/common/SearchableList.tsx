@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
     list: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
-      // position: 'relative',
       overflow: 'auto',
       maxHeight: 300,
       minHeight: 300,
