@@ -14,9 +14,7 @@ function App() {
   });
 
   const onSelectFilterOptions = (selectedOptions: any[]) => {
-    if (selectedOptions) {
-      console.log(`You selected: ${JSON.stringify(selectedOptions)}`);
-    }
+    console.log(`You selected: ${JSON.stringify(selectedOptions)}`);
   };
 
   return (
