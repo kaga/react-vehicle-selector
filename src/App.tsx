@@ -13,6 +13,12 @@ function App() {
     cache: new InMemoryCache(),
   });
 
+  const onSelectFilterOptions = (selectedOptions: any[]) => {
+    if (selectedOptions) {
+      console.log(`You selected: ${JSON.stringify(selectedOptions)}`);
+    }
+  };
+
   return (
     <React.Fragment>
       <ApolloProvider client={client}>
@@ -20,12 +26,14 @@ function App() {
           <Grid item>
             <FilterBar
               filters={[VehicleYearFilterItem, VehicleMakeFilterItem, VehicleModelFilterItem]}
+              onSelectedAllFilterItems={(selectedOption) => onSelectFilterOptions(selectedOption)}
             ></FilterBar>
           </Grid>
 
           <Grid item>
             <FilterBar
               filters={[VehicleMakeFilterItem, VehicleModelFilterItem, VehicleYearFilterItem]}
+              onSelectedAllFilterItems={(selectedOption) => onSelectFilterOptions(selectedOption)}
             ></FilterBar>
           </Grid>
         </Grid>

@@ -1,15 +1,13 @@
 import { Container, Paper, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import update from 'immutability-helper';
-import { isEqual, reduce } from 'lodash';
+import { every, isEqual, isObject, reduce } from 'lodash';
 import { FilterBarItemState, FilterItem } from './FilterItem';
 
-//TODO check output of 2021 SUZUKI
-//TODO inform the user selected a vehicle
 //TODO it is doing extra API ?
-
 export function FilterBar(props: FilterBarProps) {
   const [state, setState] = useState(initialFilterItemState(props.filters));
+  const allSelectedOptions = state.map((filterItemState) => filterItemState.selectedOption);
 
   useEffect(() => {
     const updatedState = updateFilterItemsState(props, state);
@@ -17,6 +15,12 @@ export function FilterBar(props: FilterBarProps) {
       setState(updatedState);
     }
   }, [props, state]);
+
+  useEffect(() => {
+    if (every(allSelectedOptions, isObject)) {
+      props.onSelectedAllFilterItems(allSelectedOptions);
+    }
+  }, [props, allSelectedOptions]);
 
   return (
     <Container maxWidth="lg">
@@ -124,4 +128,5 @@ type SetFilterBarState = React.Dispatch<React.SetStateAction<FilterBarState>>;
 
 type FilterBarProps = {
   filters: FilterItem<any>[];
+  onSelectedAllFilterItems: (selectedOption: any[]) => void;
 };
