@@ -73,7 +73,7 @@ const ModelSelector = GraphqlVehicleSelectorItem<VehicleModelOption, VehicleMode
       return {
         data: data.map((item) => ({
           type: 'MODEL',
-          optionLabel: `${item.name}-${item.id}`,
+          optionLabel: `${item.name}`,
           ...item,
         })),
       };
