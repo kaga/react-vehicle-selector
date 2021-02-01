@@ -1,7 +1,7 @@
 # Getting Started with Create React App
 
-![Node.js CI](https://github.com/kaga/react-vehicle-selector/workflows/Node.js%20CI/badge.svg?branch=main)
-![Publish To kaga/vehicle-selector-demo Github Page](https://github.com/kaga/react-vehicle-selector/workflows/Publish%20To%20kaga/vehicle-selector-demo%20Github%20Page/badge.svg?branch=main)
+![Main Branch CI/CD](https://github.com/kaga/react-vehicle-selector/workflows/Main%20Branch%20CI/CD/badge.svg)
+![Publish To kaga/vehicle-selector-demo Github Page](https://github.com/kaga/react-vehicle-selector/workflows/Publish%20To%20kaga/vehicle-selector-demo%20Github%20Page/badge.svg)
 
 [View Demo Page Here](https://kaga.github.io/vehicle-selector-demo/)
 
