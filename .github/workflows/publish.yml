@@ -1,8 +1,8 @@
 name: Publish To kaga/vehicle-selector-demo Github Page
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [published]
 
 jobs:
   build:
