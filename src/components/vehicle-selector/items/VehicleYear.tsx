@@ -1,8 +1,6 @@
 import { SearchableListProps } from '../../common/SearchableList';
 import {
-  GraphqlVehicleYearsVariable,
-  getResponseItems,
-  VEHICLE_SELECTOR_YEARS,
+  useVehicleYearsSelector,
 } from '../../../services/vehicle-selector/queries/VehicleYears';
 import { VehicleMakeOption } from './VehicleMake';
 import { VehicleModelOption } from './VehicleModel';
@@ -56,25 +54,31 @@ export const VehicleYearFilterItem: FilterItem<VehicleYearFilterItemProps> = {
   },
 };
 
-const YearSelector = GraphqlVehicleSelectorItem<VehicleYearOption, GraphqlVehicleYearsVariable, VehicleYearFilterItemProps>(
-  {
-    title: 'Year',
-    graphql: {
-      query: VEHICLE_SELECTOR_YEARS,
-      getQueryVariables: (props) => ({
+const YearSelector = GraphqlVehicleSelectorItem<VehicleYearOption, VehicleYearFilterItemProps>({
+  title: 'Year',
+  useClient: (props) => {
+    const { data } = useVehicleYearsSelector({
+      shouldSkip: props.disabled || false,
+      variables: {
         uvdb_make_id: props.selectedMake?.id,
         uvdb_model_id: props.selectedModel?.id,
-        limit: 1000, //TODO implement pagination 
-      }),
-      parseResponseBodies: (data) =>
-        getResponseItems(data).map((item) => ({
+        limit: 1000, //TODO implement pagination
+      },
+    });
+    if (data) {
+      return {
+        data: data.map((item) => ({
           type: 'YEAR',
+          optionLabel: `${item.id}`,
           ...item,
         })),
-    },
-    getOptionLabel: (option) => `${option.id}`,
+      };
+    }
+    return {
+      data: undefined,
+    };
   },
-);
+});
 
 interface VehicleYearFilterItemProps extends SearchableListProps<VehicleYearOption> {
   selectedMake?: VehicleMakeOption;
@@ -84,4 +88,5 @@ interface VehicleYearFilterItemProps extends SearchableListProps<VehicleYearOpti
 export type VehicleYearOption = {
   type: 'YEAR';
   id: number;
+  optionLabel: String;
 };

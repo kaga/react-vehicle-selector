@@ -1,9 +1,5 @@
 import { SearchableListProps } from '../../common/SearchableList';
-import {
-  GraphqlVehicleMakesVariable,
-  getResponseItems,
-  VEHICLE_SELECTOR_MAKES,
-} from '../../../services/vehicle-selector/queries/VehicleMakes';
+import { useVehicleMakesSelector } from '../../../services/vehicle-selector/queries/VehicleMakes';
 import { VehicleYearOption } from './VehicleYear';
 import update from 'immutability-helper';
 import React from 'react';
@@ -28,7 +24,7 @@ export const VehicleMakeFilterItem: FilterItem<VehicleMakeFilterItemProps> = {
         case 'YEAR':
           return update(props, {
             selectedYear: { $set: selectedOption as VehicleYearOption },
-            selectedOption: { $set: undefined }
+            selectedOption: { $set: undefined },
           });
       }
     }
@@ -50,21 +46,29 @@ export const VehicleMakeFilterItem: FilterItem<VehicleMakeFilterItemProps> = {
   },
 };
 
-const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, GraphqlVehicleMakesVariable, VehicleMakeFilterItemProps>({
+const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, VehicleMakeFilterItemProps>({
   title: 'Make',
-  graphql: {
-    query: VEHICLE_SELECTOR_MAKES,
-    getQueryVariables: (props) => ({
-      uvdb_year_id: props.selectedYear?.id,
-      query: props.searchQuery,
-    }),
-    parseResponseBodies: (data) =>
-      getResponseItems(data).map((item) => ({
-        type: 'MAKE',
-        ...item,
-      })),
+  useClient: (props) => {
+    const { data } = useVehicleMakesSelector({
+      shouldSkip: props.disabled || false,
+      variables: {
+        uvdb_year_id: props.selectedYear?.id,
+        query: props.searchQuery,
+      },
+    });
+    if (data) {
+      return {
+        data: data.map((item) => ({
+          type: 'MAKE',
+          optionLabel: `${item.name}-${item.id}`,
+          ...item,
+        })),
+      };
+    }
+    return {
+      data: undefined,
+    };
   },
-  getOptionLabel: (option) => option.name,
 });
 
 interface VehicleMakeFilterItemProps extends SearchableListProps<VehicleMakeOption> {
@@ -75,4 +79,5 @@ export type VehicleMakeOption = {
   type: 'MAKE';
   id: number;
   name: string;
+  optionLabel: String;
 };
