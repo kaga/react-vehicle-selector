@@ -8,5 +8,8 @@
     },
     "editor.renderWhitespace": "boundary",
     "editor.codeActionsOnSave": {
-    }
+    },
+    "cSpell.words": [
+        "testid"
+    ]
 }

@@ -1,8 +1,4 @@
-import { getResponseItems } from '../../../services/vehicle-selector/queries/VehicleModels';
-import {
-  GraphqlVehicleModelsVariable,
-  VEHICLE_SELECTOR_MODELS,
-} from '../../../services/vehicle-selector/queries/VehicleModels';
+import { useVehicleModelsSelector } from '../../../services/vehicle-selector/queries/VehicleModels';
 
 import { SearchableListProps } from '../../common/SearchableList';
 import { VehicleMakeOption } from './VehicleMake';
@@ -57,31 +53,35 @@ export const VehicleModelFilterItem: FilterItem<VehicleModelFilterItemProps> = {
   },
 };
 
-const ModelSelector = GraphqlVehicleSelectorItem<
-  VehicleModelOption,
-  GraphqlVehicleModelsVariable,
-  VehicleModelFilterItemProps
->({
+const ModelSelector = GraphqlVehicleSelectorItem<VehicleModelOption, VehicleModelFilterItemProps>({
   title: 'Model',
-  graphql: {
-    query: VEHICLE_SELECTOR_MODELS,
-    getQueryVariables: ({ selectedMake, selectedYear, searchQuery }) => {
-      if (selectedMake) {
-        return {
-          uvdb_year_id: selectedYear?.id,
-          uvdb_make_id: selectedMake.id,
-          query: searchQuery,
-        };
-      }
-      return undefined;
-    },
-    parseResponseBodies: (data) =>
-      getResponseItems(data).map((item) => ({
-        type: 'MODEL',
-        ...item,
-      })),
+  useClient: ({ selectedMake, selectedYear, searchQuery, disabled }) => {
+    let queryVariable = undefined;
+    if (selectedMake) {
+      queryVariable = {
+        uvdb_year_id: selectedYear?.id,
+        uvdb_make_id: selectedMake.id,
+        query: searchQuery,
+      };
+    }
+
+    const { data } = useVehicleModelsSelector({
+      shouldSkip: disabled || isUndefined(queryVariable),
+      variables: queryVariable,
+    });
+    if (data) {
+      return {
+        data: data.map((item) => ({
+          type: 'MODEL',
+          optionLabel: `${item.name}-${item.id}`,
+          ...item,
+        })),
+      };
+    }
+    return {
+      data: undefined,
+    };
   },
-  getOptionLabel: (option) => option.name,
 });
 
 interface VehicleModelFilterItemProps extends SearchableListProps<VehicleModelOption> {
@@ -93,4 +93,5 @@ export type VehicleModelOption = {
   type: 'MODEL';
   id: number;
   name: string;
+  optionLabel: String;
 };

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import { IdentifiableModel } from '../../IdentifiableModel';
+import { VehicleSelectorClient, unionById } from '../Client';
 import { FRAGMENT_LEGACY_PAGINATION_CURSOR, FRAGMENT_UVDB_I18N } from './Fragments';
 
 export interface GraphqlVehicleModelsVariable {
@@ -16,18 +17,6 @@ export interface GraphqlVehicleModelsVariable {
 export interface UvdbModel extends IdentifiableModel<number> {
   id: number;
   name: string;
-}
-
-export function getResponseItems(data: {
-  uvdb: {
-    vehicle_selector: {
-      uvdb_models: {
-        items: UvdbModel[];
-      };
-    };
-  };
-}) {
-  return data.uvdb.vehicle_selector.uvdb_models.items;
 }
 
 export const VEHICLE_SELECTOR_MODELS = gql`
@@ -69,3 +58,21 @@ export const VEHICLE_SELECTOR_MODELS = gql`
   ${FRAGMENT_LEGACY_PAGINATION_CURSOR}
   ${FRAGMENT_UVDB_I18N}
 `;
+
+type ResponseBody = {
+  uvdb: {
+    vehicle_selector: {
+      uvdb_models: {
+        items: UvdbModel[];
+      };
+    };
+  };
+}
+
+export const useVehicleModelsSelector = VehicleSelectorClient<GraphqlVehicleModelsVariable | undefined, UvdbModel[]>({
+  query: VEHICLE_SELECTOR_MODELS,
+  parseResponse: (data: ResponseBody) => {
+    const items = data.uvdb.vehicle_selector.uvdb_models.items;
+    return unionById(items);
+  },
+});
