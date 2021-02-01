@@ -4,6 +4,7 @@
 ![Publish To kaga/vehicle-selector-demo Github Page](https://github.com/kaga/react-vehicle-selector/workflows/Publish%20To%20kaga/vehicle-selector-demo%20Github%20Page/badge.svg)
 
 [View Demo Page Here](https://kaga.github.io/vehicle-selector-demo/)
+[View Demo Repo Here](https://github.com/kaga/vehicle-selector-demo)
 
 This is a demo for creating a vehicle selector. It is a filter bar with the options of next
 filter element are based on the previous filter selection.
