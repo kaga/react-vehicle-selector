@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme: Theme) =>
       maxHeight: 300,
       minHeight: 300,
     },
+    textfield: {
+      width: '100%',
+    }
   }),
 );
 
@@ -55,6 +58,7 @@ export function SearchableList<ListOptionType extends ListOption>({
   return (
     <Box className={classes.root}>
       <TextField
+        className={classes.textfield}
         disabled={disabled}
         value={searchQuery}
         label={title}

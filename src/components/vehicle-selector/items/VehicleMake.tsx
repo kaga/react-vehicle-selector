@@ -60,7 +60,7 @@ const MakeSelector = GraphqlVehicleSelectorItem<VehicleMakeOption, VehicleMakeFi
       return {
         data: data.map((item) => ({
           type: 'MAKE',
-          optionLabel: `${item.name}-${item.id}`,
+          optionLabel: `${item.name}`,
           ...item,
         })),
       };

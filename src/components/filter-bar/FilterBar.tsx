@@ -37,7 +37,7 @@ export function FilterBar(props: FilterBarProps) {
                     setState((previousState) => {
                       const updatedState = [...previousState];
                       updatedState[index] = newFilterItemState;
-                      return onStateUpdated(props, updatedState, newFilterItemState);
+                      return onFilterItemStateUpdated(props, updatedState, newFilterItemState);
                     });
                   },
                 })}
@@ -84,7 +84,7 @@ function updateFilterItemsState(props: FilterBarProps, state: FilterBarState) {
   return updatedState;
 }
 
-function onStateUpdated(
+function onFilterItemStateUpdated(
   props: FilterBarProps,
   previousState: FilterBarState,
   updatedSelectedItemState: FilterBarItemState,
