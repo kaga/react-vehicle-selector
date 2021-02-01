@@ -2,7 +2,7 @@ import { FilterBarState } from './FilterBar';
 
 export interface FilterItem<StateType extends FilterBarItemState> {
   createInitialState(): StateType;
-  createElement(props: StateType): JSX.Element;
+  createElement(props: FilterBarItemProps<StateType>): JSX.Element;
   updateFilterItemState(filterBarState: FilterBarState, props: StateType): StateType;
   onFilterItemUpdated(
     filterBarState: FilterBarState,
@@ -16,6 +16,11 @@ export type FilterBarItemState = {
   selectedOption?: FilterItemOption;
   searchQuery?: string;
 };
+
+export interface FilterBarItemProps<StateType extends FilterBarItemState> {
+  state: StateType
+  onStateUpdated(state: StateType): void
+}
 interface FilterItemOption {
   type: string;
 }

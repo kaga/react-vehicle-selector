@@ -1,6 +1,5 @@
 import { Container, Paper, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import update from 'immutability-helper';
 import { every, isEqual, isObject, reduce } from 'lodash';
 import { FilterBarItemState, FilterItem } from './FilterItem';
 
@@ -31,10 +30,16 @@ export function FilterBar(props: FilterBarProps) {
             return (
               <Grid item xs key={`filter-bar-item-grid-${index}`}>
                 {element.createElement({
-                  ...filterItemState,
-                  onSearchQueryUpdated: (newQuery: any) => onSearchQueryUpdated(setState, newQuery, index),
-                  onSelectedOptionUpdated: (selectedOption: any) =>
-                    onSelectedOptionUpdated(props, setState, selectedOption, index),
+                  state: {
+                    ...filterItemState,
+                  },
+                  onStateUpdated: (newFilterItemState) => {
+                    setState((previousState) => {
+                      const updatedState = [...previousState];
+                      updatedState[index] = newFilterItemState;
+                      return onStateUpdated(props, updatedState, newFilterItemState);
+                    });
+                  },
                 })}
               </Grid>
             );
@@ -79,54 +84,29 @@ function updateFilterItemsState(props: FilterBarProps, state: FilterBarState) {
   return updatedState;
 }
 
-//TODO remove any
-function onSearchQueryUpdated(setState: SetFilterBarState, newQuery: any, index: number) {
-  setState((previousState) => {
-    const updatedState = [...previousState];
-    const previousItemState = previousState[index];
-    const updatedItemState = update(previousItemState, {
-      searchQuery: { $set: newQuery },
-    }) as FilterBarItemState;
-
-    updatedState[index] = updatedItemState;
-
-    return updatedState;
-  });
-}
-
-function onSelectedOptionUpdated(
+function onStateUpdated(
   props: FilterBarProps,
-  setState: SetFilterBarState,
-  selectedOption: any,
-  index: number,
+  previousState: FilterBarState,
+  updatedSelectedItemState: FilterBarItemState,
 ) {
-  setState((previousState) => {
-    const updatedState = [...previousState];
-    const previousItemState = previousState[index];
-    const updatedSelectedItemState = update(previousItemState, {
-      selectedOption: { $set: selectedOption },
-    }) as FilterBarItemState;
-
-    updatedState[index] = updatedSelectedItemState;
-
-    props.filters.forEach((element, elementIndex) => {
+  return reduce(
+    props.filters,
+    (result, element, elementIndex) => {
       const previousItemState = previousState[elementIndex];
-      const updatedItemState = element.onFilterItemUpdated(updatedState, updatedSelectedItemState, previousItemState);
+      const updatedItemState = element.onFilterItemUpdated(result, updatedSelectedItemState, previousItemState);
 
       if (updatedItemState) {
-        updatedState[elementIndex] = updatedItemState;
+        result[elementIndex] = updatedItemState;
       }
-    });
-
-    return updatedState;
-  });
+      return result;
+    },
+    previousState,
+  );
 }
 
 export type FilterBarState = FilterBarItemState[];
 
-type SetFilterBarState = React.Dispatch<React.SetStateAction<FilterBarState>>;
-
 type FilterBarProps = {
-  filters: FilterItem<any>[];
+  filters: FilterItem<FilterBarItemState>[];
   onSelectedAllFilterItems: (selectedOption: any[]) => void;
 };

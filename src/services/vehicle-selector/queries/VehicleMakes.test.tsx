@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import { useVehicleMakesSelector, VEHICLE_SELECTOR_MAKES } from './VehicleMakes';
-import { VEHICLE_SELECTOR_YEARS, useVehicleYearsSelector } from './VehicleYears';
 
 const response = [
   {

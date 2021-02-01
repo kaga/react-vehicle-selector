@@ -10,7 +10,7 @@ export function VehicleSelectorClient<GraphqlQueryVariableType, ResponseType>({
   query: DocumentNode;
   parseResponse: (response: any) => ResponseType;
 }) {
-  return function _VehicleSelector({ variables, shouldSkip = false }: VehicleSelectorQuery<GraphqlQueryVariableType>) {
+  return function _VehicleSelectorClient({ variables, shouldSkip = false }: VehicleSelectorQuery<GraphqlQueryVariableType>) {
     const { data } = useQuery(query, {
       variables: variables,
       skip: shouldSkip,

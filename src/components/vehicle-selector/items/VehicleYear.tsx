@@ -1,7 +1,5 @@
 import { SearchableListProps } from '../../common/SearchableList';
-import {
-  useVehicleYearsSelector,
-} from '../../../services/vehicle-selector/queries/VehicleYears';
+import { useVehicleYearsSelector } from '../../../services/vehicle-selector/queries/VehicleYears';
 import { VehicleMakeOption } from './VehicleMake';
 import { VehicleModelOption } from './VehicleModel';
 import update from 'immutability-helper';
@@ -67,11 +65,16 @@ const YearSelector = GraphqlVehicleSelectorItem<VehicleYearOption, VehicleYearFi
     });
     if (data) {
       return {
-        data: data.map((item) => ({
-          type: 'YEAR',
-          optionLabel: `${item.id}`,
-          ...item,
-        })),
+        data: data
+          .filter((item) => {
+            const searchQuery = props.searchQuery;
+            return !searchQuery || item.id.toString().startsWith(searchQuery);
+          })
+          .map((item) => ({
+            type: 'YEAR',
+            optionLabel: `${item.id}`,
+            ...item,
+          })),
       };
     }
     return {
